@@ -3,6 +3,7 @@ function love.load()
     player.x = 0
     player.y = 0
     player.speed = 3
+    player.sprite = love.graphics.newImage('sprites/chick.png')
 end
 
 function love.update(dt)
@@ -24,5 +25,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.circle("fill", player.x, player.y, 10)
+    love.graphics.draw(player.sprite, player.x, player.y)
+    love.graphics.draw(player.sprite, player.x + 100, player.y)
 end
