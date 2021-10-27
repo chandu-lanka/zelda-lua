@@ -1,5 +1,7 @@
 function love.load()
     anim8 = require 'lib/anim8'
+    sti = require 'lib/sti'
+    camera = require 'lib/camera'
 
     love.graphics.setDefaultFilter("nearest", "nearest")
 
@@ -19,6 +21,12 @@ function love.load()
     player.animations.right = anim8.newAnimation( player.grid('1-4', 2), 0.2 )
 
     player.anim = player.animations.left
+
+    -- loading map
+    game_map = sti('maps/map.lua')
+
+    -- camera
+    cam = camera()
 end
 
 function love.update(dt)
@@ -53,8 +61,15 @@ function love.update(dt)
     end
 
     player.anim:update(dt)
+
+    cam:lookAt(player.x, player.y)
 end
 
 function love.draw()
-    player.anim:draw(player.sprite_sheet, player.x, player.y, nil, 10)
+    cam:attach()
+        game_map:drawLayer(game_map.layers["ground"])
+        game_map:drawLayer(game_map.layers["houses"])
+        game_map:drawLayer(game_map.layers["decor"])
+        player.anim:draw(player.sprite_sheet, player.x, player.y, nil, nil, nil, 8, 16)
+    cam:detach()
 end
